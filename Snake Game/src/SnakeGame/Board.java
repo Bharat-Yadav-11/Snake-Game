@@ -14,7 +14,7 @@ public class Board extends JPanel implements ActionListener {
 
     private final int ALL_DOTS = 2500;
     private final int DOT_SIZE = 10;
-    private final int RANDOM_POSITION = 29;
+    final int RANDOM_POSITION = 29;
     private int apple_x;
     private int apple_y;
 
@@ -29,6 +29,8 @@ public class Board extends JPanel implements ActionListener {
     public boolean inGame = true;
     private int dots;
     private Timer timer;
+    private int VALUE = 0;
+    private JButton restart;
 
     Board(){
         addKeyListener(new TAdapter());
@@ -62,6 +64,7 @@ public class Board extends JPanel implements ActionListener {
         timer.start();
     }
 
+
     public void locateApple() {
        int r = (int) (Math.random() * RANDOM_POSITION);
        apple_x = r*DOT_SIZE;
@@ -87,20 +90,36 @@ public class Board extends JPanel implements ActionListener {
                 }
                 Toolkit.getDefaultToolkit().sync();
             }
+            score(g);
 
         } else {
             gameOver(g);
+            restart = new JButton("Restart");
+            restart.setBounds(200, 225, 100, 30);
+            restart.setBackground(Color.WHITE);
+            restart.setForeground(Color.BLACK);
+            restart.addActionListener(this);
+            add(restart);
         }
     }
     public void gameOver(Graphics g) {
         String msg = "Game Over";
         Font font = new Font("SAN_SERIF", Font.BOLD, 20);
-        FontMetrics metrices = getFontMetrics(font);
+        FontMetrics metrics = getFontMetrics(font);
 
         g.setColor(Color.WHITE);
         g.setFont(font);
 
-        g.drawString(msg, (500 - metrices.stringWidth(msg)) / 2, 500/2);
+        g.drawString(msg, (500 - metrics.stringWidth(msg)) / 2, 400/2);
+    }
+
+    public void score(Graphics s){
+        String msg = "Score : " + VALUE;
+        Font font = new Font("SAN_SERIF", Font.BOLD, 20);
+
+        s.setColor(Color.WHITE);
+        s.setFont(font);
+        s.drawString(msg, 210, 20);
     }
 
     public void move() {
@@ -126,6 +145,7 @@ public class Board extends JPanel implements ActionListener {
         if((x[0] == apple_x) && (y[0] == apple_y)){
             dots++;
             locateApple();
+            VALUE++;
         }
     }
     public void checkCollision(){
@@ -158,6 +178,9 @@ public class Board extends JPanel implements ActionListener {
             checkApple();
             checkCollision();
             move();
+        } else if (e.getSource() == restart) {
+            setVisible(false);
+            new SnakeGame().setVisible(true);
         }
         repaint();
     }
