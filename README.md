@@ -47,7 +47,7 @@ To run the Snake Game, follow these steps:
 
 - Avoid running into the walls or colliding with the snake's own body. Collisions will end the game.
 
-- The game will display a "Game Over" message when you lose. You can restart the game by closing and rerunning it.
+- The game will display a "Game Over" message when you lose. You can restart the game by click on the restart button.
 
 ## Code Structure
 
